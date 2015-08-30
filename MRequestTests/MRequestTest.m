@@ -37,7 +37,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should get"];
     
-    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
         
         [expectation fulfill];
         
@@ -70,7 +70,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should not get"];
     
-    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
         
         NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
         

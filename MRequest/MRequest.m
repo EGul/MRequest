@@ -10,7 +10,7 @@
 
 @implementation MRequest
 
--(void)requestWithOptions:(NSDictionary *)options completionBlock:(void (^)(NSError *, NSURLResponse *, NSData *))block {
+-(void)requestWithOptions:(NSDictionary *)options completionHandler:(void (^)(NSError *, NSURLResponse *, NSData *))block {
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]init];
     [request setHTTPMethod:[options valueForKey:@"method"]];
