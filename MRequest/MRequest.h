@@ -12,6 +12,6 @@
     
 }
 
--(void)requestWithOptions:(NSDictionary *)options completionBlock:(void(^)(NSError *error, NSHTTPURLResponse *response, NSData *data))block;
+-(void)requestWithOptions:(NSDictionary *)options completionBlock:(void(^)(NSError *, NSHTTPURLResponse *, NSData *))block;
 
 @end

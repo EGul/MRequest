@@ -26,17 +26,55 @@
     [super tearDown];
 }
 
--(void)testRequest {
+-(void)testRequestGet {
     
     MRequest *request = [[MRequest alloc]init];
     
-    NSDictionary *opts = @{};
+    NSDictionary *opts = @{
+                           @"method": @"get",
+                           @"url": @"https://github.com"
+                           };
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"something"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should get"];
     
     [request requestWithOptions:opts completionBlock:^ (NSError *err, NSHTTPURLResponse *response, NSData *data) {
         
         [expectation fulfill];
+        
+        XCTAssertNil(err);
+        XCTAssertEqual(200, response.statusCode);
+        XCTAssertNotNil(data);
+        
+    }];
+    
+    [self waitForExpectationsWithTimeout:0.5 handler:^ (NSError *err) {
+        
+        if (err) {
+            XCTFail(@"error: %@", err);
+        }
+        
+    }];
+    
+}
+
+-(void)testRequestGetFail {
+    
+    MRequest *request = [[MRequest alloc]init];
+    
+    NSDictionary *opts = @{
+                           @"method": @"get",
+                           @"url": @"https://githubdfail.com"
+                           };
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should not get"];
+    
+    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSHTTPURLResponse *response, NSData *data) {
+        
+        [expectation fulfill];
+        
+        XCTAssertNotNil(err);
+        XCTAssertEqual(0, response.statusCode);
+        XCTAssertNil(data);
         
     }];
     

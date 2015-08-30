@@ -10,11 +10,17 @@
 
 @implementation MRequest
 
--(void)requestWithOptions:(NSDictionary *)options completionBlock:(void (^)(NSError *, NSHTTPURLResponse *response, NSData *))block {
+-(void)requestWithOptions:(NSDictionary *)options completionBlock:(void (^)(NSError *, NSHTTPURLResponse *, NSData *))block {
     
-    NSError *err;
-    NSHTTPURLResponse *response;
-    NSData *data;
+    NSError *err = nil;
+    NSHTTPURLResponse *response = nil;
+    NSData *data = nil;
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]init];
+    [request setHTTPMethod:[options valueForKey:@"method"]];
+    [request setURL:[NSURL URLWithString:[options valueForKey:@"url"]]];
+    
+    data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
     
     block(err, response, data);
     
