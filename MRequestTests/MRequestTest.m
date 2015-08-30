@@ -37,12 +37,14 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should get"];
     
-    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSHTTPURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSURLResponse *response, NSData *data) {
         
         [expectation fulfill];
         
+        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
+        
         XCTAssertNil(err);
-        XCTAssertEqual(200, response.statusCode);
+        XCTAssertEqual(200, httpURLResponse.statusCode);
         XCTAssertNotNil(data);
         
     }];
@@ -68,17 +70,19 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should not get"];
     
-    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSHTTPURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts completionBlock:^ (NSError *err, NSURLResponse *response, NSData *data) {
+        
+        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
         
         [expectation fulfill];
         
         XCTAssertNotNil(err);
-        XCTAssertEqual(0, response.statusCode);
+        XCTAssertEqual(0, httpURLResponse.statusCode);
         XCTAssertNil(data);
         
     }];
     
-    [self waitForExpectationsWithTimeout:0.5 handler:^ (NSError *err) {
+    [self waitForExpectationsWithTimeout:5 handler:^ (NSError *err) {
         
         if (err) {
             XCTFail(@"error: %@", err);
