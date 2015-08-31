@@ -29,10 +29,10 @@
 -(void)testRequestGet {
     
     MRequest *request = [[MRequest alloc]init];
-    
+
     NSDictionary *opts = @{
                            @"method": @"get",
-                           @"url": @"https://github.com"
+                           @"url": @"http://localhost:8080"
                            };
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should get"];
@@ -65,7 +65,7 @@
     
     NSDictionary *opts = @{
                            @"method": @"get",
-                           @"url": @"https://githubdfail.com"
+                           @"url": @"https://localhost:8000"
                            };
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should not get"];
