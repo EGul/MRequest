@@ -92,6 +92,74 @@
     
 }
 
+-(void)testRequestPost {
+    
+    MRequest *request = [[MRequest alloc]init];
+    
+    NSDictionary *opts = @{
+                           @"method": @"post",
+                           @"url": @"http://localhost:8080",
+                           @"data": @"something=somethingdata&secondsomething=secondsomethingdata"
+                           };
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should post"];
+    
+    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
+        
+        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
+        
+        XCTAssertNil(err);
+        XCTAssertEqual(200, httpURLResponse.statusCode);
+        XCTAssertNotNil(data);
+        
+        [expectation fulfill];
+        
+    }];
+    
+    [self waitForExpectationsWithTimeout:0.5 handler:^ (NSError *err) {
+       
+        if (err) {
+            XCTFail(@"error: %@", err);
+        }
+        
+    }];
+    
+}
+
+-(void)testRequestPostFail {
+    
+    MRequest *request = [[MRequest alloc]init];
+    
+    NSDictionary *opts = @{
+                           @"method": @"post",
+                           @"url": @"http://localhost:8000",
+                           @"data": @"something=somethingdata&secondsomething=secondsomethingdata"
+                           };
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should post"];
+    
+    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
+        
+        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
+        
+        XCTAssertNotNil(err);
+        XCTAssertEqual(0, httpURLResponse.statusCode);
+        XCTAssertNil(data);
+        
+        [expectation fulfill];
+        
+    }];
+    
+    [self waitForExpectationsWithTimeout:0.5 handler:^ (NSError *err) {
+        
+        if (err) {
+            XCTFail(@"error: %@", err);
+        }
+        
+    }];
+    
+}
+
 - (void)testExample {
     // This is an example of a functional test case.
     XCTAssert(YES, @"Pass");

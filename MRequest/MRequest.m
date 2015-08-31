@@ -11,6 +11,7 @@
 @interface MRequest ()
 
 -(void)get:(NSURL *)url completionHandler:(void(^)(NSError *, NSURLResponse *, NSData *))block;
+-(void)post:(NSURL *)url data:(NSString *)data completionHandler:(void(^)(NSError *, NSURLResponse *, NSData *))block;
 
 @end
 
@@ -29,6 +30,16 @@
         
     }
     
+    if ([method isEqualToString:@"post"]) {
+        
+        NSString *data = [options valueForKey:@"data"];
+        
+        [self post:url data:data completionHandler:^ (NSError *error, NSURLResponse *response, NSData *data) {
+            block(error, response, data);
+        }];
+        
+    }
+    
 }
 
 -(void)get:(NSURL *)url completionHandler:(void (^)(NSError *, NSURLResponse *, NSData *))block {
@@ -36,6 +47,25 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]init];
     [request setHTTPMethod:@"get"];
     [request setURL:url];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^ (NSURLResponse *response, NSData *data, NSError *error) {
+        block(error, response, data);
+    }];
+    
+}
+
+-(void)post:(NSURL *)url data:(NSString *)data completionHandler:(void (^)(NSError *, NSURLResponse *, NSData *))block {
+    
+    NSData *postData = [data dataUsingEncoding:NSASCIIStringEncoding];
+    
+    NSString *postLength =[NSString stringWithFormat:@"%lu", postData.length];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]init];
+    [request setHTTPMethod:@"post"];
+    [request setURL:url];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
+    [request setHTTPBody:postData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^ (NSURLResponse *response, NSData *data, NSError *error) {
         block(error, response, data);
