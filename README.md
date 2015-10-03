@@ -1,8 +1,8 @@
-#MRequest
+#M Request
 Minimalist request library
 
-##Usage
-###GET
+## Usage
+### GET
 ```objective-c
 
 NSDictionary *opts = @{
@@ -12,22 +12,14 @@ NSDictionary *opts = @{
 
 MRequest *request = [[MRequest alloc]init];
 
-[request requestWithOptions:opts completionBlock: ^ (NSError *error, NSURLResponse *response, NSData *data) {
+[request requestWithOptions:opts success:^ (NSURLResponse *response, NSData *data) {
 
-  if (error == nil) {
+  NSLog(@"data: %@", data);
 
-    NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
-
-    if (httpURLResponse.statusCode == 200) {
-      NSLog(@"data: %@", data);
-    }
-
-  }
-
-}];
+}fail:nil];
 
 ```
-###POST
+### POST
 ```objective-c
 
 NSDictionary *opts = @{
@@ -38,32 +30,25 @@ NSDictionary *opts = @{
 
 MRequest *request = [[MRequest alloc]init];
 
-[request requestWithOptions:opts completionBlock: ^ (NSError *error, NSURLResponse *response, NSData *data) {
+[request requestWithOptions:opts success:^ (NSURLResponse *response, NSData *data) {
 
-  if (error == nil) {
+  NSLog(@"data: %@", data);
 
-    NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
+}fail:nil];
 
-    if (httpURLResponse.statusCode == 200) {
-      NSLog(@"data: %@", data);
-    }
-
-  }
-
-}];
 ```
 
-##API
+## API
 ```objective-c
 -(void)requestWithOptions:(NSDictionary *)options completionHandler:(void(^)(NSError *, NSURLResponse *, NSData));
 ```
 request with options
 
-##Install
+## Install
 ```
 git clone https://github.com/EGul/MRequest.git
 ```
 Move MRequest.h MRequest.m files to project
 
-##License
+## License
 MIT
