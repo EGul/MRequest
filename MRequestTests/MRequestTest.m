@@ -37,17 +37,17 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should get"];
     
-    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts success:^ (NSURLResponse *response, NSData *data) {
+        
+        NSHTTPURLResponse *httpURLRequest = (NSHTTPURLResponse *)response;
+        
+        XCTAssertEqual(200, httpURLRequest.statusCode);
+        XCTAssertNotNil(data);
         
         [expectation fulfill];
         
-        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
         
-        XCTAssertNil(err);
-        XCTAssertEqual(200, httpURLResponse.statusCode);
-        XCTAssertNotNil(data);
-        
-    }];
+    }fail:nil];
     
     [self waitForExpectationsWithTimeout:0.5 handler:^ (NSError *err) {
         
@@ -70,15 +70,14 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should not get"];
     
-    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts success:nil fail:^ (NSURLResponse *response, NSError *err) {
         
         NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
         
-        [expectation fulfill];
-        
         XCTAssertNotNil(err);
         XCTAssertEqual(0, httpURLResponse.statusCode);
-        XCTAssertNil(data);
+        
+        [expectation fulfill];
         
     }];
     
@@ -104,17 +103,16 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should post"];
     
-    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts success:^ (NSURLResponse *response, NSData *data) {
         
-        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
+        NSHTTPURLResponse *httpURLRequest = (NSHTTPURLResponse *)response;
         
-        XCTAssertNil(err);
-        XCTAssertEqual(200, httpURLResponse.statusCode);
+        XCTAssertEqual(200, httpURLRequest.statusCode);
         XCTAssertNotNil(data);
         
         [expectation fulfill];
         
-    }];
+    }fail:nil];
     
     [self waitForExpectationsWithTimeout:0.5 handler:^ (NSError *err) {
        
@@ -138,13 +136,12 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"should post"];
     
-    [request requestWithOptions:opts completionHandler:^ (NSError *err, NSURLResponse *response, NSData *data) {
+    [request requestWithOptions:opts success:nil fail:^ (NSURLResponse *response, NSError *err) {
         
-        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse *)response;
-        
+        NSHTTPURLResponse *httpURLRequest = (NSHTTPURLResponse *)response;
+       
         XCTAssertNotNil(err);
-        XCTAssertEqual(0, httpURLResponse.statusCode);
-        XCTAssertNil(data);
+        XCTAssertEqual(0, httpURLRequest.statusCode);
         
         [expectation fulfill];
         

@@ -12,6 +12,7 @@
     
 }
 
--(void)requestWithOptions:(NSDictionary *)options completionHandler:(void(^)(NSError *, NSURLResponse *, NSData *))block;
+//-(void)requestWithOptions:(NSDictionary *)options completionHandler:(void(^)(NSError *, NSURLResponse *, NSData *))block;
+-(void)requestWithOptions:(NSDictionary *)options success:(void(^)(NSURLResponse *, NSData *))successBlock fail:(void(^)(NSURLResponse *response, NSError *error))failBlock;
 
 @end
