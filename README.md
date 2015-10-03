@@ -1,4 +1,4 @@
-#M Request
+# MRequest
 Minimalist request library
 
 ## Usage
@@ -40,7 +40,7 @@ MRequest *request = [[MRequest alloc]init];
 
 ## API
 ```objective-c
--(void)requestWithOptions:(NSDictionary *)options completionHandler:(void(^)(NSError *, NSURLResponse *, NSData));
+-(void)requestWithOptions:(NSDictionary *)options success(void(^)(NSURLResponse *, NSData *))successBlock fail:(void(^)(NSURLRespones *, NSError *))failBlock;
 ```
 request with options
 
