@@ -45,6 +45,13 @@ MRequest *request = [[MRequest alloc]init];
 request with options
 
 ## Install
+### CocoaPods
+#### Podfile
+```
+pod "MRequest", :git => "https://github.com/egul/mrequest"
+```
+
+### Manual
 ```
 git clone https://github.com/EGul/MRequest.git
 ```
